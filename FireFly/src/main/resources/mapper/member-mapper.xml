@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lecture.iot.dao.MemberDao">
+	<select id="selectOne" parameterType="String" resultType="Member">
+		select *
+		from member
+		where user_id = #{userId}
+	</select>
+	
+	<select id="selectList" resultType="Member">
+		select *
+		from member
+	</select>
+	
+	<select id="selectCount" resultType="int">
+		select count(*)
+		from member
+	</select>
+	
+	<insert id="insert" parameterType="Member">
+		insert into member (user_id, name, password, email, regDate)
+		values(#{userId}, #{name}, #{password}, #{email}, sysdate)
+	</insert>
+	
+	<update id="update" parameterType="Member">
+		UPDATE member SET
+			name = #{name}, email = #{email}
+		WHERE user_id = #{userId} and password = #{password}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		DELETE from member
+		WHERE user_id = #{userId}
+	</delete>
+</mapper>
+	
+	

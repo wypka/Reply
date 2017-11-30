@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lecture.iot.dao.ReplyDao">
+	<select id="count" resultType="int">
+		select count(*)
+		from reply
+	</select>
+	<select id="getReply" parameterType="long" resultType="Reply">
+		select *
+		from reply
+		where board_id = #{boardId}
+		order by re_ref desc
+	</select>
+	<update id="delete" parameterType="Reply">
+		update reply set
+		writer = '관리자', content='삭제 요청으로 블라인드 처리되었습니다.'
+		where board_id = #{boardId} and reply_id=#{replyId} and password =
+		#{password}
+	</update>
+
+	<insert id="insert" parameterType="Reply">		
+		insert into reply(reply_id, board_id, writer,password,
+		content,re_ref,re_depth,re_seq,reg_date)
+		values(reply_seq.nextval,#{boardId},#{writer},#{password},#{content},1,0,0,sysdba)
+	</insert>
+
+	<update id="update" parameterType="Reply">
+		update set content=#{content}
+		where board_id = #{boardId} and reply_id = #{replyId}
+	</update>
+
+	<update id="updateReSeq" parameterType="hashmap">
+		update reply set
+		re_seq = re_seq+1
+		where re_ref=#{reRef} and re_seq>#{reSeq}
+	</update>
+
+	<insert id="insertReply" parameterType="Reply">		
+		insert into reply(reply_id, board_id, writer,password,
+		content,re_ref,re_depth,re_seq,reg_date)
+		values(reply_seq.nextval,#{boardId},#{writer},#{password},#{content},#{reRef},#{reDepth},#{reSeq},sysdba)
+		
+	</insert>
+</mapper>
+	
+	
